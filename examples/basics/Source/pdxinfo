@@ -1,0 +1,6 @@
+name=CrankBoard: The Basics
+author=BitCaliberGames
+description=The four CrankBoard calls and when to make them, without a game.
+bundleID=com.example.crankboard-basics
+version=1.0
+buildNumber=1

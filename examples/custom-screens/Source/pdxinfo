@@ -1,0 +1,6 @@
+name=CrankBoard: Your Own Screens
+author=BitCaliberGames
+description=Every CrankBoard screen in its own file, ready to change.
+bundleID=com.example.crankboard-custom-screens
+version=1.0
+buildNumber=1

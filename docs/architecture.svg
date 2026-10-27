@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="800" viewBox="0 0 1320 800">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#495057"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #212529; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 15px; fill: #6c757d; }
+      .h { font-size: 21px; font-weight: 700; }
+      .sub { font-size: 13px; fill: #6c757d; }
+      .bt { font-size: 15px; font-weight: 700; }
+      .t { font-size: 13px; fill: #343a40; }
+      .cap { font-size: 12px; fill: #6c757d; }
+      .code { font-family: Consolas, Menlo, "Courier New", monospace; font-size: 12.5px; fill: #212529; }
+      .api { font-family: Consolas, Menlo, "Courier New", monospace; font-size: 12px; fill: #1e6b31; }
+      .lbl { font-size: 12.5px; font-weight: 600; fill: #495057; }
+      .line { stroke: #495057; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+
+  <rect width="1320" height="800" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="660" y="46" text-anchor="middle" class="title">How CrankBoard works</text>
+  <text x="660" y="76" text-anchor="middle" class="subtitle">Your game calls four functions · CrankBoard handles the player-facing flow and the network · Talo stores players and scores</text>
+
+  <!-- Playdate device frame -->
+  <rect x="24" y="100" width="876" height="676" rx="18" fill="#fffbea" stroke="#e0b100" stroke-width="2"/>
+  <text x="44" y="128" class="bt" fill="#8a6d00" style="fill:#8a6d00">PLAYDATE · the player's device</text>
+
+  <!-- ===== Your game ===== -->
+  <rect x="48" y="146" width="340" height="450" rx="12" fill="#ffffff" stroke="#868e96" stroke-width="2"/>
+  <text x="66" y="180" class="h">Your game</text>
+  <text x="66" y="201" class="sub">main.lua · the developer's own code</text>
+
+  <rect x="64" y="220" width="308" height="62" rx="8" fill="#f1f3f5" stroke="#ced4da"/>
+  <text x="76" y="245" class="code">crankboard.setup{ accessKey, leaderboard }</text>
+  <text x="76" y="268" class="cap">once at startup · key from the Talo dashboard</text>
+
+  <rect x="64" y="292" width="308" height="62" rx="8" fill="#f1f3f5" stroke="#ced4da"/>
+  <text x="76" y="317" class="code">if crankboard.update() then return end</text>
+  <text x="76" y="340" class="cap">first line of playdate.update(), every frame</text>
+
+  <rect x="64" y="364" width="308" height="62" rx="8" fill="#f1f3f5" stroke="#ced4da"/>
+  <text x="76" y="389" class="code">crankboard.submitScore(score)</text>
+  <text x="76" y="412" class="cap">when a game ends · optional extra props</text>
+
+  <rect x="64" y="436" width="308" height="62" rx="8" fill="#f1f3f5" stroke="#ced4da"/>
+  <text x="76" y="461" class="code">crankboard.showLeaderboard()</text>
+  <text x="76" y="484" class="cap">from the game's menu</text>
+
+  <rect x="64" y="512" width="308" height="62" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-dasharray="5 4"/>
+  <text x="76" y="537" class="code">onComplete(status, info)</text>
+  <text x="76" y="560" class="cap">optional: submitted · queued · denied · declined</text>
+
+  <!-- game <-> library arrows -->
+  <line x1="392" y1="360" x2="464" y2="360" class="line" marker-end="url(#arrow)"/>
+  <text x="429" y="350" text-anchor="middle" class="lbl">calls</text>
+  <line x1="464" y1="543" x2="392" y2="543" class="line" marker-end="url(#arrow)"/>
+  <text x="429" y="533" text-anchor="middle" class="lbl">results</text>
+
+  <!-- ===== CrankBoard ===== -->
+  <rect x="470" y="146" width="406" height="450" rx="12" fill="#eaf2ff" stroke="#2f6fdb" stroke-width="2.5"/>
+  <text x="488" y="180" class="h" style="fill:#1c4fa8">CrankBoard</text>
+  <text x="488" y="201" class="sub">crankboard.lua · one file in the game's Source/ folder</text>
+
+  <rect x="486" y="220" width="374" height="80" rx="8" fill="#ffffff" stroke="#9bbcf2"/>
+  <text x="500" y="245" class="bt" style="fill:#1c4fa8">Player prompts</text>
+  <text x="500" y="267" class="t">"Join the online leaderboard?" before the system dialog</text>
+  <text x="500" y="286" class="t">Name entry · status messages · every text customizable</text>
+
+  <rect x="486" y="311" width="374" height="80" rx="8" fill="#ffffff" stroke="#9bbcf2"/>
+  <text x="500" y="336" class="bt" style="fill:#1c4fa8">Leaderboard screen</text>
+  <text x="500" y="358" class="t">Tabs: this week · this month · all time</text>
+  <text x="500" y="377" class="t">Top N, then &quot;you are #15&quot; below</text>
+
+  <rect x="486" y="402" width="374" height="80" rx="8" fill="#ffffff" stroke="#9bbcf2"/>
+  <text x="500" y="427" class="bt" style="fill:#1c4fa8">Offline queue</text>
+  <text x="500" y="449" class="t">No Wi-Fi? The score is kept on the device</text>
+  <text x="500" y="468" class="t">and sent automatically next time</text>
+
+  <rect x="486" y="493" width="374" height="80" rx="8" fill="#ffffff" stroke="#9bbcf2"/>
+  <text x="500" y="518" class="bt" style="fill:#1c4fa8">Talo API client</text>
+  <text x="500" y="540" class="t">Identifies the player, sends scores,</text>
+  <text x="500" y="559" class="t">loads leaderboard entries</text>
+
+  <!-- library <-> Playdate OS -->
+  <line x1="673" y1="600" x2="673" y2="636" class="line" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="686" y="623" class="lbl">permission · network · save data</text>
+
+  <!-- ===== Playdate OS ===== -->
+  <rect x="48" y="640" width="828" height="116" rx="12" fill="#fff0e0" stroke="#e8590c" stroke-width="2"/>
+  <text x="66" y="666" class="bt" style="fill:#c2410c">Playdate OS</text>
+  <text x="168" y="666" class="sub">SDK 2.7+</text>
+
+  <rect x="64" y="680" width="262" height="60" rx="8" fill="#ffffff" stroke="#f5a66b"/>
+  <text x="78" y="704" class="bt" style="font-size:14px">Network permission dialog</text>
+  <text x="78" y="726" class="cap">shown once, after CrankBoard explains why</text>
+
+  <rect x="340" y="680" width="250" height="60" rx="8" fill="#ffffff" stroke="#f5a66b"/>
+  <text x="354" y="704" class="bt" style="font-size:14px">Wi-Fi + HTTPS</text>
+  <text x="354" y="726" class="cap">playdate.network</text>
+
+  <rect x="604" y="680" width="256" height="60" rx="8" fill="#ffffff" stroke="#f5a66b"/>
+  <text x="618" y="704" class="bt" style="font-size:14px">Save data</text>
+  <text x="618" y="726" class="cap">playdate.datastore → crankboard.json</text>
+
+  <!-- library <-> Talo arrows -->
+  <line x1="864" y1="548" x2="1000" y2="548" class="line" marker-end="url(#arrow)"/>
+  <text x="945" y="538" text-anchor="middle" class="lbl">HTTPS + key</text>
+  <line x1="1000" y1="572" x2="864" y2="572" class="line" marker-end="url(#arrow)"/>
+  <text x="945" y="592" text-anchor="middle" class="lbl">JSON</text>
+
+  <!-- ===== Talo ===== -->
+  <rect x="990" y="146" width="306" height="610" rx="12" fill="#e9f7ee" stroke="#2b8a3e" stroke-width="2.5"/>
+  <text x="1008" y="180" class="h" style="fill:#1e6b31">Talo</text>
+  <text x="1008" y="201" class="sub">api.trytalo.com · free hosted backend</text>
+
+  <rect x="1006" y="220" width="274" height="104" rx="8" fill="#ffffff" stroke="#8ccb9b"/>
+  <text x="1020" y="245" class="bt" style="fill:#1e6b31">Dashboard</text>
+  <text x="1020" y="267" class="t">Set up once by the developer:</text>
+  <text x="1020" y="286" class="t">game, leaderboard, access key</text>
+  <text x="1020" y="305" class="t">Hide or delete suspicious entries</text>
+
+  <rect x="1006" y="336" width="274" height="80" rx="8" fill="#ffffff" stroke="#8ccb9b"/>
+  <text x="1020" y="361" class="bt" style="fill:#1e6b31">Players</text>
+  <text x="1020" y="383" class="t">One per Playdate (random ID)</text>
+  <text x="1020" y="402" class="t">The name is stored as a player prop</text>
+
+  <rect x="1006" y="428" width="274" height="80" rx="8" fill="#ffffff" stroke="#8ccb9b"/>
+  <text x="1020" y="453" class="bt" style="fill:#1e6b31">Leaderboards</text>
+  <text x="1020" y="475" class="t">Weekly / monthly / all time,</text>
+  <text x="1020" y="494" class="t">best score per player + props</text>
+
+  <rect x="1006" y="520" width="274" height="220" rx="8" fill="#ffffff" stroke="#8ccb9b"/>
+  <text x="1020" y="545" class="bt" style="fill:#1e6b31">REST API used</text>
+  <text x="1020" y="574" class="api">GET   /v1/players/identify</text>
+  <text x="1020" y="590" class="cap">who is this Playdate?</text>
+  <text x="1020" y="616" class="api">PATCH /v1/players/:id</text>
+  <text x="1020" y="632" class="cap">save the player's name</text>
+  <text x="1020" y="658" class="api">POST  /v1/leaderboards/:name/entries</text>
+  <text x="1020" y="674" class="cap">send a score (+ props), per board</text>
+  <text x="1020" y="700" class="api">GET   /v1/leaderboards/:name/entries/top</text>
+  <text x="1020" y="716" class="cap">top list + the player's own entry</text>
+</svg>
