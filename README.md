@@ -9,7 +9,8 @@ You add one file to your game and a few lines of code. CrankBoard does the rest:
 - asks the player **once** whether they want to join the online leaderboard;
 - asks the Playdate for internet access, and explains why first;
 - asks for a name the first time;
-- sends the score, and if there's no Wi-Fi, keeps it and sends it later;
+- sends the score, and if there's no Wi-Fi, keeps it and sends it later (see
+  [No connection, no permission, Talo down](#no-connection-no-permission-talo-down));
 - shows a ready-made leaderboard screen, with the player's own place highlighted.
 
 | The question after the first score | The leaderboard screen |
@@ -349,6 +350,46 @@ crankboard.getEntries({ leaderboard = "alltime", limit = 10, onComplete = functi
 end })
 ```
 
+## No connection, no permission, Talo down
+
+Online scores never stop your game. When something goes wrong, the score is kept on the Playdate
+and the player sees a short message, never an HTTP error.
+
+| Situation | What the player sees | What happens to the score | `result` |
+|---|---|---|---|
+| The player doesn't allow internet access | After joining: "Network access is disabled. Enable it in Settings > Permissions." | Kept, sent once access is allowed | `DENIED` |
+| The player turns access off later | Nothing | Kept, sent once access is allowed again | `DENIED` |
+| No Wi-Fi | First score: "Couldn't connect. Your score is saved and will be sent next time." Later scores: nothing | Kept, sent later | `QUEUED` |
+| Talo is down, slow or busy (no answer, a timeout, an error 5xx, too many requests 429) | The same as no Wi-Fi | Kept, sent later | `QUEUED` |
+| Talo refuses the score (e.g. a leaderboard name that doesn't exist) | First score: "The score could not be submitted." Later scores: nothing | Dropped: sending it again wouldn't help | `FAILED` |
+
+Only the first score, when the player joins, shows anything on screen. After that, scores are sent
+in the background while the game goes on. The "Sending score..." screen of the first score waits
+for an answer at most 20 seconds (`timeout` in `setup()`).
+
+**When the kept scores are sent.** CrankBoard tries again on the next `submitScore()`, when the
+leaderboard opens, when the player turns online scores on, and when you call `crankboard.flush()`.
+It doesn't send them by itself at startup, so to send them as soon as the game starts, add this
+after `crankboard.setup()`:
+
+```lua
+crankboard.flush()   -- does nothing if there's nothing to send or the player hasn't joined
+```
+
+Each try sends the scores one by one, oldest first, and stops at the first failure, so a server
+that is down gets one request, not many. Up to 60 scores are kept (`maxPending`; a score sent to
+three leaderboards counts as three). When more pile up, the oldest ones are dropped.
+`crankboard.pendingCount()` says how many are waiting.
+
+**The leaderboard screen** shows the rows it loaded last time, with "No connection: scores from
+2 days ago" under the tabs. If it never loaded before, the player sees "Couldn't connect. Check
+Wi-Fi and try again." (or the "Network access is disabled" message) and the screen closes; a tab
+that fails to load later shows "Ⓐ Retry".
+
+**For you, the developer:** the reason is in the Simulator's console (messages start with
+`[crankboard]`) and in `info.error` of `submitScore()`'s `onComplete`. To try all this without
+turning off your Wi-Fi, see [How do I test without a connection?](#how-do-i-test-without-a-connection).
+
 ## Make it look like your game
 
 Change the colors and buttons with a few settings, add your own frame, icons and fonts, or draw
@@ -386,11 +427,10 @@ never mix with real players' scores. The Simulator shows test data; a real Playd
 dashboard don't (in the dashboard you can turn dev data on). To test with real data from the
 Simulator, add `devBuild = false` to `crankboard.setup()`.
 
-### There's no Wi-Fi
+### There's no Wi-Fi, or Talo is down
 
-Scores are kept on the Playdate and sent automatically next time. The leaderboard screen shows the
-scores it loaded the last time, with "No connection: scores from 2 days ago" under the tabs. If it
-never loaded before, a "Couldn't connect" message appears instead.
+Scores are kept on the Playdate and sent later, and the leaderboard screen shows the scores it
+loaded last time. See [No connection, no permission, Talo down](#no-connection-no-permission-talo-down).
 
 ### How do I test without a connection?
 
@@ -409,7 +449,8 @@ own row always shows their current name.
 ### The player didn't allow internet access
 
 The Playdate remembers that answer. The player can change it in **Settings > Permissions**.
-Meanwhile CrankBoard keeps their scores and sends them later.
+Meanwhile CrankBoard keeps their scores and sends them later, see
+[No connection, no permission, Talo down](#no-connection-no-permission-talo-down).
 
 ### Can players cheat?
 
